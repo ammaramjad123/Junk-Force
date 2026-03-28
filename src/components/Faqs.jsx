@@ -4,7 +4,7 @@ import { ChevronDown, HelpCircle, Phone, Mail, ArrowRight } from "lucide-react";
 const faqs = [
   {
     question: "How quickly can you respond to a junk removal request?",
-    answer: "We aim to respond to all enquiries within 30 minutes during business hours. For same-day service, we can often be at your location within 2-4 hours depending on availability. Emergency services are available 24/7."
+    answer: "We aim to respond to all enquiries within 15 minutes during business hours. For same-day service, we can often be at your location within 2-4 hours depending on availability. Emergency services are available 24/7."
   },
   {
     question: "Do you offer free estimates?",

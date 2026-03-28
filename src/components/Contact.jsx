@@ -203,7 +203,7 @@ export default function ContactSection() {
               <div className="p-6 sm:p-8 md:p-10">
                 <div className="mb-8">
                   <h2 className="text-2xl md:text-3xl font-bold text-white mb-2 font-serif">Send us a message</h2>
-                  <p className="text-white/50 text-sm md:text-base">Fill out the form below and we'll get back to you within 30 minutes.</p>
+                  <p className="text-white/50 text-sm md:text-base">Fill out the form below and we'll get back to you within 15 minutes.</p>
                 </div>
 
                 {isSubmitted ? (

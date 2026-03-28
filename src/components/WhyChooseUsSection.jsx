@@ -50,9 +50,9 @@ export default function WhyChooseUsSection() {
     {
       id: 3,
       title: "Same-Day Service",
-      description: "Need junk gone today? We offer same-day service with response times under 2 hours. Quick, efficient, and reliable.",
+      description: "Need junk gone today? We offer same-day service with response times under 15 minutes. Quick, efficient, and reliable.",
       icon: <Clock size={32} />,
-      stats: "< 2 Hrs Response"
+      stats: "< 15 Min Response"
     },
     {
       id: 4,

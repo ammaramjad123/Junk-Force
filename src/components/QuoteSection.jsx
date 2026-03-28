@@ -223,7 +223,7 @@ const formRef = useRef();
               </h2>
               <p className="text-white/70 text-base md:text-lg font-sans leading-relaxed">
                 Tell us about your junk removal needs and we'll provide you with a 
-                free, transparent quote within 30 minutes. No hidden fees, no surprises.
+                free, transparent quote within 15 minutes. No hidden fees, no surprises.
               </p>
             </motion.div>
 
@@ -293,8 +293,8 @@ const formRef = useRef();
                 <MessageCircle size={20} className="text-[#ee8c2c]" />
               </div>
               <div>
-                <p className="text-white font-bold text-sm">30-Minute Response Guarantee</p>
-                <p className="text-white/50 text-xs">We'll get back to you within 30 minutes during business hours</p>
+                <p className="text-white font-bold text-sm">15-Minute Response Guarantee</p>
+                <p className="text-white/50 text-xs">We'll get back to you within 15 minutes during business hours</p>
               </div>
             </motion.div>
           </motion.div>
@@ -319,7 +319,7 @@ const formRef = useRef();
                     <CheckCircle size={32} className="text-green-500" />
                   </div>
                   <h4 className="text-white font-bold text-xl mb-2">Quote Request Sent!</h4>
-                  <p className="text-white/60">We'll get back to you within 30 minutes.</p>
+                  <p className="text-white/60">We'll get back to you within 15 minutes.</p>
                 </motion.div>
               ) : (
                <form ref={formRef} onSubmit={handleSubmit} className="space-y-5">
