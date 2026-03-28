@@ -134,15 +134,15 @@ export default function Navbar() {
                 </Link>
 
                 <button
-                  onClick={() => handleHashNavigation({ label: "About Us", path: "#about", targetPage: "/" })}
+                  onClick={() => handleHashNavigation({ label: "Testimonials", path: "#testimonials", targetPage: "/" })}
                   className="group relative whitespace-nowrap text-base xl:text-lg font-semibold text-white hover:text-[#ee8c2c] transition-colors duration-300 cursor-pointer"
                 >
-                  About Us
+                  Testimonials
                   <span className="absolute left-0 top-full mt-1 h-0.5 w-0 rounded-full bg-[#ee8c2c] transition-all duration-300 group-hover:w-full" />
                 </button>
 
-                <Link
-                  to="/services"
+                <a
+                  href="#services"
                   className={`group relative whitespace-nowrap text-base xl:text-lg font-semibold transition-colors duration-300 ${
                     isActive("/services") ? "text-[#ee8c2c]" : "text-white hover:text-[#ee8c2c]"
                   }`}
@@ -153,7 +153,7 @@ export default function Navbar() {
                       isActive("/services") ? "w-full bg-[#ee8c2c]" : "w-0 bg-[#ee8c2c]"
                     }`}
                   />
-                </Link>
+                </a>
 
                 <button
                   onClick={() => handleHashNavigation({ label: "How It Works", path: "#how-it-works", targetPage: "/" })}
@@ -181,12 +181,16 @@ export default function Navbar() {
                   <Phone size={16} className="xl:w-[18px] xl:h-[18px]" />
                   <span>(901) 350-9597</span>
                 </a>
+                <a
+                href="#quote">
+
                 <button
-                  className="flex items-center gap-2 px-5 xl:px-6 py-2 xl:py-2.5 rounded-full font-bold text-sm xl:text-base bg-[#ee8c2c] text-white shadow-lg hover:bg-[#d47a1f] hover:shadow-xl transition-all duration-300 hover:-translate-y-0.5"
-                >
+                  className="flex items-center gap-2 px-5 xl:px-6 py-2 xl:py-2.5 rounded-full font-bold text-sm xl:text-base bg-[#ee8c2c] text-white shadow-lg hover:bg-[#d47a1f] hover:shadow-xl transition-all duration-300 hover:-translate-y-0.5 cursor-pointer"
+                  >
                   <Calendar size={16} className="xl:w-[18px] xl:h-[18px]" />
                   <span>Free Quote</span>
                 </button>
+                  </a>
               </div>
 
               {/* MOBILE MENU TOGGLE */}
@@ -258,16 +262,16 @@ export default function Navbar() {
 
               <button
                 onClick={() => {
-                  handleHashNavigation({ label: "About Us", path: "#about", targetPage: "/" });
+                  handleHashNavigation({ label: "Testimonials", path: "#testimonials", targetPage: "/" });
                   setMobileOpen(false);
                 }}
                 className="py-3 px-4 rounded-xl text-lg sm:text-xl font-semibold text-white hover:bg-white/10 transition-all duration-300 text-left"
               >
-                About Us
+                Testimonials
               </button>
 
-              <Link
-                to="/services"
+              <a
+                href="#services"
                 className={`py-3 px-4 rounded-xl text-lg sm:text-xl font-semibold transition-all duration-300 ${
                   isActive("/services") 
                     ? "bg-[#ee8c2c]/20 text-[#ee8c2c] border-l-4 border-[#ee8c2c]" 
@@ -276,7 +280,7 @@ export default function Navbar() {
                 onClick={() => setMobileOpen(false)}
               >
                 Services
-              </Link>
+              </a>
 
               <button
                 onClick={() => {
@@ -309,13 +313,16 @@ export default function Navbar() {
                 <Phone size={18} className="sm:w-5 sm:h-5" />
                 <span>Call (901) 350-9597</span>
               </a>
+              <a href="#quote">
+
               <button
                 onClick={() => setMobileOpen(false)}
                 className="flex items-center justify-center gap-3 w-full py-3.5 sm:py-4 rounded-full bg-[#ee8c2c] text-white font-bold text-base sm:text-lg hover:bg-[#d47a1f] transition-all duration-300 shadow-lg"
-              >
+                >
                 <Calendar size={18} className="sm:w-5 sm:h-5" />
                 <span>Get Free Quote</span>
               </button>
+                </a>
             </div>
 
             {/* Trust Badges */}

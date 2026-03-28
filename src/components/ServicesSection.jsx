@@ -256,13 +256,16 @@ export default function ServicesSection() {
                   </div>
 
                   {/* CTA Button */}
-                  <button className="w-full group/btn relative overflow-hidden rounded-xl bg-white/10 border border-white/20 py-3 text-white font-semibold transition-all duration-300 hover:bg-[#ee8c2c] hover:border-[#ee8c2c]">
+                 <a href="#quote">
+
+                  <button className="w-full group/btn relative overflow-hidden rounded-xl bg-white/10 border border-white/20 py-3 text-white font-semibold transition-all duration-300 hover:bg-[#ee8c2c] hover:border-[#ee8c2c] cursor-pointer">
                     <span className="relative z-10 flex items-center justify-center gap-2">
                       Get Free Quote
                       <ArrowRight size={16} className="transition-transform duration-300 group-hover/btn:translate-x-1" />
                     </span>
                     <div className="absolute inset-0 bg-gradient-to-r from-[#ee8c2c] to-[#f5a450] opacity-0 group-hover/btn:opacity-100 transition-opacity duration-300" />
                   </button>
+                 </a>
                 </div>
               </div>
             </motion.div>

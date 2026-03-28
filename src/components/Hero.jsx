@@ -197,7 +197,9 @@ export default function HeroSection() {
               <div className="absolute inset-0 bg-gradient-to-r from-[#ee8c2c]/0 via-[#ee8c2c]/20 to-[#ee8c2c]/0 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700" />
             </a>
             <div className="inline-block transition-transform duration-300 hover:-translate-y-1">
-  <button className="group relative inline-flex items-center justify-center gap-3 px-8 py-4 rounded-full bg-gradient-to-r from-[#ee8c2c] to-[#f5a450] text-white font-bold text-base sm:text-lg hover:shadow-2xl transition-all duration-300 overflow-hidden font-['Montserrat']">
+  <a href="#quote">
+
+  <button className="group relative inline-flex items-center justify-center gap-3 px-8 py-4 rounded-full bg-gradient-to-r from-[#ee8c2c] to-[#f5a450] text-white font-bold text-base sm:text-lg hover:shadow-2xl transition-all duration-300 overflow-hidden font-['Montserrat'] cursor-pointer">
 
     {/* Gradient Hover Overlay */}
     <div className="absolute inset-0 z-0 bg-gradient-to-r from-[#d47a1f] to-[#ee8c2c] opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
@@ -212,6 +214,7 @@ export default function HeroSection() {
     <ArrowRight className="w-5 h-5 relative z-10 group-hover:translate-x-1 transition-transform duration-300" />
 
   </button>
+  </a>
 </div>
           </motion.div>
 

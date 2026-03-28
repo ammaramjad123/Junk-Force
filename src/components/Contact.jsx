@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import emailjs from "@emailjs/browser";
 import { 
   Send, 
   Phone, 
@@ -33,6 +34,16 @@ export default function ContactSection() {
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [focusedField, setFocusedField] = useState(null);
   const [openDropdown, setOpenDropdown] = useState(false);
+
+  useEffect(() => {
+  if (isSubmitted) {
+    const timer = setTimeout(() => {
+      setIsSubmitted(false);
+    }, 4000); // form returns after 4 seconds
+
+    return () => clearTimeout(timer);
+  }
+}, [isSubmitted]);
 
   const services = [
     { value: 'general', label: 'General Enquiry' },
@@ -81,23 +92,47 @@ export default function ContactSection() {
   };
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
-    const newErrors = validateForm();
-    if (Object.keys(newErrors).length > 0) {
-      setErrors(newErrors);
-      return;
-    }
-    
-    setIsSubmitting(true);
-    await new Promise(resolve => setTimeout(resolve, 1500));
-    setIsSubmitting(false);
+  e.preventDefault();
+
+  const newErrors = validateForm();
+  if (Object.keys(newErrors).length > 0) {
+    setErrors(newErrors);
+    return;
+  }
+
+  setIsSubmitting(true);
+
+  try {
+    await emailjs.send(
+      "service_wtax8g9",          // your service id
+      "template_fo79inb",         // your template id
+      {
+         fullName: formData.fullName,
+    email: formData.email,
+    phone: formData.phone,
+    service: services.find(s => s.value === formData.service)?.label,
+    message: formData.message,
+        title: "Contact Form Submission"
+      },
+      "aK-LjuvacQU3cwdWP"          // your public key
+    );
+
     setIsSubmitted(true);
-    
-    setTimeout(() => {
-      setIsSubmitted(false);
-      setFormData({ fullName: '', email: '', phone: '', message: '', service: 'general' });
-    }, 3000);
-  };
+    setFormData({
+      fullName: "",
+      email: "",
+      phone: "",
+      message: "",
+      service: "general"
+    });
+
+  } catch (error) {
+    console.error("EmailJS Error:", error);
+    alert("Something went wrong. Please try again.");
+  }
+
+  setIsSubmitting(false);
+};
 
   const contactMethods = [
     {
@@ -111,9 +146,9 @@ export default function ContactSection() {
     {
       icon: <Mail className="w-6 h-6" />,
       title: 'Email Us',
-      details: ['info@junkforcetn.com'],
+      details: ['junkforce901@gmail.com'],
       action: 'Send Email',
-      link: 'mailto:info@junkforcetn.com',
+      link: 'mailto:junkforce901@gmail.com',
       color: 'from-[#ee8c2c] to-[#f5a450]'
     },
     {
@@ -316,7 +351,7 @@ export default function ContactSection() {
                     <button
                       type="submit"
                       disabled={isSubmitting}
-                      className="w-full py-4 bg-gradient-to-r from-[#ee8c2c] to-[#f5a450] text-white rounded-xl font-semibold shadow-lg hover:shadow-xl transition-all duration-300 flex items-center justify-center gap-2 group disabled:opacity-50 disabled:cursor-not-allowed"
+                      className="w-full py-4 bg-gradient-to-r from-[#ee8c2c] to-[#f5a450] text-white rounded-xl font-semibold shadow-lg hover:shadow-xl transition-all duration-300 flex items-center justify-center gap-2 group disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
                     >
                       {isSubmitting ? (
                         <>

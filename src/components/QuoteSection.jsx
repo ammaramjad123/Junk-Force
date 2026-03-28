@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import { motion, useAnimation, useInView } from "framer-motion";
+import emailjs from "@emailjs/browser";
 import { 
   Send, 
   Calendar, 
@@ -26,6 +27,7 @@ import {
 } from "lucide-react";
 
 export default function QuoteSection() {
+const formRef = useRef(); 
   const controls = useAnimation();
   const ref = useRef(null);
   const inView = useInView(ref, { once: true, threshold: 0.1 });
@@ -42,10 +44,8 @@ export default function QuoteSection() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-  const [isDateOpen, setIsDateOpen] = useState(false);
   const [isTimeOpen, setIsTimeOpen] = useState(false);
   const dropdownRef = useRef(null);
-  const dateRef = useRef(null);
   const timeRef = useRef(null);
 
   useEffect(() => {
@@ -59,9 +59,6 @@ export default function QuoteSection() {
     const handleClickOutside = (event) => {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
         setIsDropdownOpen(false);
-      }
-      if (dateRef.current && !dateRef.current.contains(event.target)) {
-        setIsDateOpen(false);
       }
       if (timeRef.current && !timeRef.current.contains(event.target)) {
         setIsTimeOpen(false);
@@ -99,26 +96,43 @@ export default function QuoteSection() {
     setIsDropdownOpen(false);
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setIsSubmitting(true);
-    
-    setTimeout(() => {
-      setIsSubmitting(false);
-      setIsSubmitted(true);
-      setFormData({
-        name: "",
-        email: "",
-        phone: "",
-        service: "",
-        address: "",
-        date: "",
-        time: "",
-        description: ""
-      });
-      setTimeout(() => setIsSubmitted(false), 5000);
-    }, 1500);
-  };
+  const handleSubmit = (e) => {
+  e.preventDefault();
+  setIsSubmitting(true);
+
+ emailjs
+  .sendForm(
+    "service_5eup73r",
+    "template_2aophaq",
+    formRef.current,
+    "DTxPvmV1rsiv2LOAW"
+  )
+    .then(
+      () => {
+        setIsSubmitting(false);
+        setIsSubmitted(true);
+
+        formRef.current.reset();
+
+        setFormData({
+          name: "",
+          email: "",
+          phone: "",
+          service: "",
+          address: "",
+          date: "",
+          time: "",
+          description: ""
+        });
+
+        setTimeout(() => setIsSubmitted(false), 5000);
+      },
+      (error) => {
+        console.error(error.text);
+        setIsSubmitting(false);
+      }
+    );
+};
 
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -234,8 +248,8 @@ export default function QuoteSection() {
                     </div>
                     <div>
                       <p className="text-white/50 text-xs font-sans uppercase tracking-wide">Email Us</p>
-                      <a href="mailto:info@junkforcetn.com" className="text-white text-[16px] sm:text-[14px] font-medium hover:text-[#ee8c2c] transition-colors break-all">
-                        info@junkforcetn.com
+                      <a href="mailto:junkforce901@gmail.com" className="text-white text-[16px] sm:text-[14px] font-medium hover:text-[#ee8c2c] transition-colors break-all">
+                        junkforce901@gmail.com
                       </a>
                     </div>
                   </div>
@@ -278,7 +292,7 @@ export default function QuoteSection() {
                   <p className="text-white/60">We'll get back to you within 30 minutes.</p>
                 </motion.div>
               ) : (
-                <form onSubmit={handleSubmit} className="space-y-5">
+               <form ref={formRef} onSubmit={handleSubmit} className="space-y-5">
                   {/* Name Field */}
                   <div>
                     <label className="block text-white/70 text-sm font-sans mb-2">
@@ -400,43 +414,28 @@ export default function QuoteSection() {
 
                   {/* Date & Time Row - Enhanced Dropdowns */}
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    {/* Date Dropdown */}
-                    <div>
-                      <label className="block text-white/70 text-sm font-sans mb-2">
-                        Preferred Date *
-                      </label>
-                      <div className="relative" ref={dateRef}>
-                        <div
-                          onClick={() => setIsDateOpen(!isDateOpen)}
-                          className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-xl text-white cursor-pointer flex items-center justify-between transition-all hover:border-[#ee8c2c]"
-                        >
-                          <div className="flex items-center gap-2">
-                            <Calendar size={18} className="text-white/40" />
-                            <span className="text-sm">
-                              {formData.date || "Select date"}
-                            </span>
-                          </div>
-                          <ChevronDown size={18} className={`transition-transform ${isDateOpen ? "rotate-180" : ""}`} />
-                        </div>
-                        
-                        {isDateOpen && (
-                          <div className="absolute top-full left-0 right-0 mt-2 bg-[#132641] border border-white/20 rounded-xl overflow-hidden z-20 shadow-2xl">
-                            <input
-                              type="date"
-                              name="date"
-                              value={formData.date}
-                              onChange={(e) => {
-                                handleChange(e);
-                                setIsDateOpen(false);
-                              }}
-                              className="w-full px-4 py-3 bg-[#132641] text-white border-b border-white/10 focus:outline-none"
-                              min={new Date().toISOString().split('T')[0]}
-                            />
-                          </div>
-                        )}
-                      </div>
-                    </div>
+                   <div>
+  <label className="block text-white/70 text-sm font-sans mb-2">
+    Preferred Date *
+  </label>
 
+  <div className="relative">
+    <Calendar
+      size={18}
+      className="absolute left-4 top-1/2 -translate-y-1/2 text-white/40 pointer-events-none"
+    />
+
+    <input
+      type="date"
+      name="date"
+      value={formData.date}
+      onChange={handleChange}
+      required
+      min={new Date().toISOString().split("T")[0]}
+      className="w-full pl-12 pr-4 py-3 bg-white/10 border border-white/20 rounded-xl text-white focus:border-[#ee8c2c] focus:outline-none transition-all appearance-none"
+    />
+  </div>
+</div>
                     {/* Time Dropdown */}
                     <div>
                       <label className="block text-white/70 text-sm font-sans mb-2">
@@ -492,11 +491,15 @@ export default function QuoteSection() {
                     />
                   </div>
 
+                  {/* Hidden fields for EmailJS */}
+<input type="hidden" name="service" value={formData.service} />
+<input type="hidden" name="time" value={formData.time} />
+
                   {/* Submit Button */}
                   <button
                     type="submit"
                     disabled={isSubmitting}
-                    className="w-full py-4 rounded-full bg-gradient-to-r from-[#ee8c2c] to-[#f5a450] text-white font-bold text-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-0.5 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 group"
+                    className="w-full py-4 rounded-full bg-gradient-to-r from-[#ee8c2c] to-[#f5a450] text-white font-bold text-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-0.5 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 group cursor-pointer"
                   >
                     {isSubmitting ? (
                       <>
