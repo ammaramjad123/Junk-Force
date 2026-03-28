@@ -45,6 +45,7 @@ const formRef = useRef();
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [isTimeOpen, setIsTimeOpen] = useState(false);
+  const [availableTimeSlots, setAvailableTimeSlots] = useState([]);
   const dropdownRef = useRef(null);
   const timeRef = useRef(null);
 
@@ -68,6 +69,44 @@ const formRef = useRef();
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
+  // Generate time slots based on selected date
+  useEffect(() => {
+    if (formData.date) {
+      const selectedDate = new Date(formData.date);
+      const dayOfWeek = selectedDate.getDay(); // 0 = Sunday, 1 = Monday, ..., 6 = Saturday
+      
+      let slots = [];
+      
+      if (dayOfWeek === 0) {
+        // Sunday: 9am to 3pm (6 hours, 2-hour slots)
+        slots = [
+          { value: "9am-11am", label: "9:00 AM - 11:00 AM" },
+          { value: "11am-1pm", label: "11:00 AM - 1:00 PM" },
+          { value: "1pm-3pm", label: "1:00 PM - 3:00 PM" }
+        ];
+      } else if (dayOfWeek >= 1 && dayOfWeek <= 6) {
+        // Monday to Saturday: 7am to 6pm (11 hours, 2-hour slots)
+        slots = [
+          { value: "7am-9am", label: "7:00 AM - 9:00 AM" },
+          { value: "9am-11am", label: "9:00 AM - 11:00 AM" },
+          { value: "11am-1pm", label: "11:00 AM - 1:00 PM" },
+          { value: "1pm-3pm", label: "1:00 PM - 3:00 PM" },
+          { value: "3pm-5pm", label: "3:00 PM - 5:00 PM" },
+          { value: "5pm-6pm", label: "5:00 PM - 6:00 PM" }
+        ];
+      }
+      
+      setAvailableTimeSlots(slots);
+      
+      // Clear previously selected time if it doesn't match new availability
+      if (formData.time && !slots.some(slot => slot.label === formData.time)) {
+        setFormData(prev => ({ ...prev, time: "" }));
+      }
+    } else {
+      setAvailableTimeSlots([]);
+    }
+  }, [formData.date]);
+
   const services = [
     { value: "residential", label: "Residential Junk Removal", icon: <Home size={18} />, desc: "Homes, apartments, garages" },
     { value: "commercial", label: "Commercial Cleanouts", icon: <Building2 size={18} />, desc: "Offices, retail, warehouses" },
@@ -76,15 +115,6 @@ const formRef = useRef();
     { value: "yard", label: "Yard Debris & Demolition", icon: <Leaf size={18} />, desc: "Storm cleanup, landscaping" },
     { value: "construction", label: "Construction Debris Removal", icon: <Hammer size={18} />, desc: "Renovation waste" },
     { value: "same-day", label: "Same-Day & Scheduled Hauling", icon: <Truck size={18} />, desc: "24/7 emergency service" }
-  ];
-
-  const timeSlots = [
-    { value: "8am-10am", label: "8:00 AM - 10:00 AM" },
-    { value: "10am-12pm", label: "10:00 AM - 12:00 PM" },
-    { value: "12pm-2pm", label: "12:00 PM - 2:00 PM" },
-    { value: "2pm-4pm", label: "2:00 PM - 4:00 PM" },
-    { value: "4pm-6pm", label: "4:00 PM - 6:00 PM" },
-    { value: "6pm-8pm", label: "6:00 PM - 8:00 PM" }
   ];
 
   const handleChange = (e) => {
@@ -443,21 +473,23 @@ const formRef = useRef();
                       </label>
                       <div className="relative" ref={timeRef}>
                         <div
-                          onClick={() => setIsTimeOpen(!isTimeOpen)}
-                          className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-xl text-white cursor-pointer flex items-center justify-between transition-all hover:border-[#ee8c2c]"
+                          onClick={() => availableTimeSlots.length > 0 && setIsTimeOpen(!isTimeOpen)}
+                          className={`w-full px-4 py-3 bg-white/10 border border-white/20 rounded-xl text-white flex items-center justify-between transition-all ${availableTimeSlots.length > 0 ? 'cursor-pointer hover:border-[#ee8c2c]' : 'cursor-not-allowed opacity-50'}`}
                         >
                           <div className="flex items-center gap-2">
                             <Clock size={18} className="text-white/40" />
                             <span className="text-sm">
-                              {formData.time || "Select time"}
+                              {formData.time || (availableTimeSlots.length > 0 ? "Select time" : "Select date first")}
                             </span>
                           </div>
-                          <ChevronDown size={18} className={`transition-transform ${isTimeOpen ? "rotate-180" : ""}`} />
+                          {availableTimeSlots.length > 0 && (
+                            <ChevronDown size={18} className={`transition-transform ${isTimeOpen ? "rotate-180" : ""}`} />
+                          )}
                         </div>
                         
-                        {isTimeOpen && (
+                        {isTimeOpen && availableTimeSlots.length > 0 && (
                           <div className="absolute top-full left-0 right-0 mt-2 bg-[#132641] border border-white/20 rounded-xl overflow-hidden z-20 shadow-2xl">
-                            {timeSlots.map((slot) => (
+                            {availableTimeSlots.map((slot) => (
                               <button
                                 key={slot.value}
                                 type="button"
@@ -473,6 +505,13 @@ const formRef = useRef();
                           </div>
                         )}
                       </div>
+                      {formData.date && (
+                        <p className="text-xs text-white/40 mt-1">
+                          {new Date(formData.date).getDay() === 0 
+                            ? "Sunday hours: 9:00 AM - 3:00 PM" 
+                            : "Monday-Saturday hours: 7:00 AM - 6:00 PM"}
+                        </p>
+                      )}
                     </div>
                   </div>
 
